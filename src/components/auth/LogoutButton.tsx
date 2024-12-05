@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 
 export const LogoutButton = () => {
@@ -8,15 +9,16 @@ export const LogoutButton = () => {
   if (session.status !== 'authenticated') {
     return null;
   }
+
   return (
-    <a
-      href="#"
+    <Button
+      variant="contained"
       onClick={(e) => {
         signOut();
         e.preventDefault();
       }}
     >
-      Sign Out ({JSON.stringify(session.data)})
-    </a>
+      Sign Out ({session.data.user?.name})
+    </Button>
   );
 };

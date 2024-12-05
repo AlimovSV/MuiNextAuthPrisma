@@ -1,22 +1,13 @@
-import type { Metadata } from 'next';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import localFont from 'next/font/local';
 import { redirect } from 'next/navigation';
 
-import { NextAuthProvider } from '@/components/auth/NextAuthProvider';
+import { NextAuthProvider } from '@/components/auth';
 import { authOptions } from '@/lib/auth';
-import './globals.css';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
+import theme from '@/theme';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -36,8 +27,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <NextAuthProvider session={session}>{children}</NextAuthProvider>
+      <body>
+        <NextAuthProvider session={session}>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <CssBaseline />
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </AppRouterCacheProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );
