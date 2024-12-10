@@ -3,12 +3,11 @@ import { useMemo } from 'react';
 import Stack from '@mui/material/Stack';
 
 import Header from '@/components/Header';
-import MainGrid from '@/components/MainGrid';
 import { NavbarBreadcrumb } from '@/components/NavbarBreadcrumbs';
 
-export default function Home() {
+export default function PatientsPage() {
   const breadcrumbs = useMemo<NavbarBreadcrumb[]>(
-    () => [{ text: 'Home', link: '/' }, { text: 'Dashboard' }],
+    () => [{ text: 'Home', link: '/' }, { text: 'Patients' }],
     [],
   );
 
@@ -23,7 +22,6 @@ export default function Home() {
       }}
     >
       <Header breadcrumbs={breadcrumbs} />
-      <MainGrid />
     </Stack>
   );
 }

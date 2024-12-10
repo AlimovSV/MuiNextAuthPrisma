@@ -1,13 +1,16 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-import { NextAuthProvider } from '@/components/auth';
-import { authOptions } from '@/lib/auth';
+import Box from '@mui/material/Box';
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 
-import theme from '@/theme';
+import AppNavbar from '@/components/AppNavBar';
+import AppTheme from '@/components/AppTheme';
+import NextAuthProvider from '@/components/NextAuthProvider';
+import SideMenu from '@/components/SideMenu';
+import { authOptions } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -26,12 +29,21 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
+        <InitColorSchemeScript attribute="class" />
         <NextAuthProvider session={session}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <CssBaseline />
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <AppTheme>
+              <Box sx={{ display: 'flex' }}>
+                <SideMenu />
+                <AppNavbar />
+                {/* Main content */}
+                <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}>
+                  {children}
+                </Box>
+              </Box>
+            </AppTheme>
           </AppRouterCacheProvider>
         </NextAuthProvider>
       </body>
