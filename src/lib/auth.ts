@@ -40,14 +40,15 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       credentials: {
         email: {
-          label: 'Email',
+          label: 'Имя пользователя',
           type: 'email',
           placeholder: 'example@example.com',
           value: 'root@root.root',
         },
         password: {
-          label: 'Password',
+          label: 'Пароль',
           type: 'password',
+          placeholder: 'Введите пароль',
           value: 'password',
         },
       },

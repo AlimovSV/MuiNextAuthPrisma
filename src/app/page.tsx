@@ -8,7 +8,7 @@ import { NavbarBreadcrumb } from '@/components/NavbarBreadcrumbs';
 
 export default function Home() {
   const breadcrumbs = useMemo<NavbarBreadcrumb[]>(
-    () => [{ text: 'Home', link: '/' }, { text: 'Dashboard' }],
+    () => [{ text: 'Главная страница', link: '/' }, { text: 'Статистика' }],
     [],
   );
 

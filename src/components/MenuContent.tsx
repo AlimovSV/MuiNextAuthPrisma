@@ -10,8 +10,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const mainListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon />, href: '/', strict: true },
-  { text: 'Patients', icon: <PeopleRoundedIcon />, href: '/patients', strict: false },
+  { text: 'Главная страница', icon: <HomeRoundedIcon />, href: '/', strict: true },
+  { text: 'Пациенты', icon: <PeopleRoundedIcon />, href: '/patients', strict: false },
 ];
 
 export default function MenuContent() {
