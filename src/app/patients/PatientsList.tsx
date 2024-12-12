@@ -1,9 +1,11 @@
 'use client';
 
 import dayjs from 'dayjs';
+import React from 'react';
 
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { Patient } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 const columns: GridColDef<Patient>[] = [
   {
@@ -36,5 +38,20 @@ type Props = {
 };
 
 export default function PatientsList({ rows }: Props) {
-  return <DataGrid columns={columns} rows={rows} />;
+  const router = useRouter();
+  const handleRowClick = React.useCallback(
+    (event: GridRowParams) => {
+      router.push(`/patients/${event.id}`);
+    },
+    [router],
+  );
+
+  return (
+    <DataGrid
+      disableRowSelectionOnClick
+      columns={columns}
+      rows={rows}
+      onRowClick={handleRowClick}
+    />
+  );
 }

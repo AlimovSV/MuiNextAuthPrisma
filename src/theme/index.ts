@@ -6,6 +6,7 @@ import { ruRU as coreRuRU } from '@mui/material/locale';
 import { ruRU as gridRuRU } from '@mui/x-data-grid/locales';
 
 import './locales/dayjs';
+import './locales/yup';
 
 export default createTheme(
   {

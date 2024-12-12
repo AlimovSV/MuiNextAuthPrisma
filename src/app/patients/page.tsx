@@ -1,3 +1,5 @@
+import { redirect, RedirectType } from 'next/navigation';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -5,31 +7,32 @@ import Typography from '@mui/material/Typography';
 import prisma from '@/lib/prisma';
 
 import Header from '@/components/Header';
-import { NavbarBreadcrumb } from '@/components/NavbarBreadcrumbs';
+import NewPatientDialog, { NewPatientDto } from './NewPatientDialog';
 import PatientsList from './PatientsList';
 
 export default async function PatientsPage() {
+  async function createPatient(data: NewPatientDto): Promise<string> {
+    'use server';
+
+    await prisma.patient.create({
+      data,
+    });
+
+    redirect('/patients', RedirectType.replace);
+  }
+
   const patients = await prisma.patient.findMany();
-  const breadcrumbs: NavbarBreadcrumb[] = [
-    { text: 'Главная страница', link: '/' },
-    { text: 'Пациенты' },
-  ];
 
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        alignItems: 'center',
-        mx: 3,
-        pb: 5,
-        mt: { xs: 8, md: 0 },
-      }}
-    >
-      <Header breadcrumbs={breadcrumbs} />
+    <Stack spacing={2} sx={{ mx: 3 }}>
+      <Header breadcrumbs={[{ text: 'Главная страница', link: '/' }, { text: 'Пациенты' }]} />
       <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
-        <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-          Пациенты
-        </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+          <Typography component="h2" variant="h6">
+            Пациенты
+          </Typography>
+          <NewPatientDialog action={createPatient} />
+        </Stack>
         <PatientsList rows={patients} />
       </Box>
     </Stack>
