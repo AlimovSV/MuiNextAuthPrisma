@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Header from '@/components/Header';
 import DeletePatientDialog from './DeletePatientDialog';
 import PatientForm, { UpdatePatientDto } from './PatientForm';
+import ScanList from './ScanList';
 
 import prisma from '@/lib/prisma';
 
@@ -50,6 +51,23 @@ export default async function PatientPage(props: PatientPageProps) {
       givenName: true,
     },
   });
+  const photos = await prisma.photo.findMany({
+    where: { patientId: params.id },
+    select: {
+      id: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
+      patientId: true,
+      contentType: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
 
   if (!patient) {
     return notFound();
@@ -77,6 +95,17 @@ export default async function PatientPage(props: PatientPageProps) {
           </Stack>
         </Stack>
         <PatientForm id={params.id} defaultValues={patient} action={updatePatient} />
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
+          <Typography component="h2" variant="h6">
+            Сканы
+          </Typography>
+          <Stack direction="row" gap={1.5}>
+            <Button type="submit" variant="outlined" form="patient">
+              Добавить
+            </Button>
+          </Stack>
+        </Stack>
+        <ScanList photos={photos} />
       </Box>
     </Stack>
   );

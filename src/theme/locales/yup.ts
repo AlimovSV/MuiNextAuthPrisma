@@ -1,4 +1,4 @@
-import { printValue, setLocale, LocaleObject } from 'yup';
+import { LocaleObject, printValue, setLocale } from 'yup';
 
 const mixed: LocaleObject['mixed'] = {
   default: '${path} является недействительным',
@@ -12,9 +12,7 @@ const mixed: LocaleObject['mixed'] = {
     let msg =
       `${path} должен быть \`${type}\` тип, ` +
       `Но окончательное значение было: \`${printValue(value, true)}\`` +
-      (isCast
-        ? ` (бросить из значения \`${printValue(originalValue, true)}\`).`
-        : '.');
+      (isCast ? ` (бросить из значения \`${printValue(originalValue, true)}\`).` : '.');
 
     if (value === null) {
       msg +=
@@ -76,4 +74,4 @@ setLocale({
   boolean,
   object,
   array,
-})
+});
