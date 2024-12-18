@@ -22,6 +22,8 @@ export default function DeletePhotoDialog({
   const [photoId, setPhotoId] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
+  const handleClose = useCallback(() => setPhotoId(undefined), []);
+
   const handleDelete = useCallback(() => {
     if (photoId) {
       startTransition(async () => {
@@ -34,7 +36,7 @@ export default function DeletePhotoDialog({
 
   return (
     <>
-      <Dialog fullWidth maxWidth="xs" onClose={close} open={isOpen}>
+      <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={isOpen}>
         <DialogTitle>Удалить скан</DialogTitle>
         <DialogContent>Вы уверены?</DialogContent>
         <DialogActions>
