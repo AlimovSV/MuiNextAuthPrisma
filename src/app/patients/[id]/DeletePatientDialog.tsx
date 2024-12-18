@@ -11,18 +11,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export type DeletePatientDialogProps = {
   id: string;
-  action: (id: string) => Promise<string>;
+  deletePatientAction: (id: string) => Promise<string>;
 };
 
-export default function DeletePatientDialog({ id, action }: DeletePatientDialogProps) {
+export default function DeletePatientDialog({ id, deletePatientAction }: DeletePatientDialogProps) {
   const [isOpen, { open, close }] = useDisclosure(false);
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = useCallback(() => {
     startTransition(async () => {
-      await action(id);
+      await deletePatientAction(id);
     });
-  }, [id, action]);
+  }, [id, deletePatientAction]);
 
   return (
     <>

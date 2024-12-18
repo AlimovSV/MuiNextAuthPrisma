@@ -16,6 +16,8 @@ import Modal from '@mui/material/Modal';
 
 import { getPhotoUrl } from '@/lib/utils';
 
+import DeletePhotoDialog from './DeletePhotoDialog';
+
 type PhotoData = {
   id: string;
   user: {
@@ -39,10 +41,12 @@ const ImagePreview = styled('img')({
 });
 
 type ScanListProps = {
+  patientId: string;
   photos: PhotoData[];
+  deletePhotoAction: (id: string, patientId: string) => Promise<string>;
 };
 
-export default function ScanList({ photos }: ScanListProps) {
+export default function ScanList({ patientId, photos, deletePhotoAction }: ScanListProps) {
   const [open, setOpen] = useState(false);
   const [photo, setPhoto] = useState<PhotoData>();
 
@@ -55,44 +59,54 @@ export default function ScanList({ photos }: ScanListProps) {
 
   return (
     <>
-      <ImageList cols={3}>
-        {photos.map((photo) => {
-          const src = getPhotoUrl(photo);
+      <DeletePhotoDialog patientId={patientId} deletePhotoAction={deletePhotoAction}>
+        {(deletePhoto) => (
+          <ImageList cols={3}>
+            {photos.map((photo) => {
+              const src = getPhotoUrl(photo);
 
-          return (
-            <ImageListItem
-              key={src}
-              onClick={() => handleOpen(photo)}
-              sx={{
-                '&:hover': {
-                  cursor: 'pointer',
-                  opacity: 0.7,
-                },
-                transition: 'opacity 0.3s',
-                opacity: 1,
-              }}
-            >
-              <ImageThumbnail src={src} alt={photo.contentType} width={300} height={300} priority />
-              <ImageListItemBar
-                position="bottom"
-                title={`Врач: ${photo.user.name}`}
-                subtitle={dayjs(photo.createdAt).format('lll')}
-                actionIcon={
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
+              return (
+                <ImageListItem
+                  key={src}
+                  onClick={() => handleOpen(photo)}
+                  sx={{
+                    '&:hover': {
+                      cursor: 'pointer',
+                      opacity: 0.7,
+                    },
+                    transition: 'opacity 0.3s',
+                    opacity: 1,
+                  }}
+                >
+                  <ImageThumbnail
+                    src={src}
+                    alt={photo.contentType}
+                    width={300}
+                    height={300}
+                    priority
+                  />
+                  <ImageListItemBar
+                    position="bottom"
+                    title={`Врач: ${photo.user.name}`}
+                    subtitle={dayjs(photo.createdAt).format('lll')}
+                    actionIcon={
+                      <IconButton
+                        onClick={(e) => {
+                          e.stopPropagation();
 
-                      alert('TODO: Remove photo');
-                    }}
-                  >
-                    <IconDelete />
-                  </IconButton>
-                }
-              />
-            </ImageListItem>
-          );
-        })}
-      </ImageList>
+                          deletePhoto(photo.id);
+                        }}
+                      >
+                        <IconDelete />
+                      </IconButton>
+                    }
+                  />
+                </ImageListItem>
+              );
+            })}
+          </ImageList>
+        )}
+      </DeletePhotoDialog>
       {photo && (
         <Modal
           open={open}

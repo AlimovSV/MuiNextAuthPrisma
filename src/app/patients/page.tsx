@@ -31,7 +31,7 @@ export default async function PatientsPage() {
           <Typography component="h2" variant="h6">
             Пациенты
           </Typography>
-          <NewPatientDialog action={createPatient} />
+          <NewPatientDialog createPatientAction={createPatient} />
         </Stack>
         <PatientsList rows={patients} />
       </Box>

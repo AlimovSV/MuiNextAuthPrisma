@@ -1,17 +1,26 @@
 import bcrypt from 'bcryptjs';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { NextAuthOptions } from 'next-auth';
-import { z } from 'zod';
+import { DefaultSession, NextAuthOptions } from 'next-auth';
+
+import * as Yup from 'yup';
 
 import { prisma } from '@/lib/prisma';
 
-const CredentialsSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+const CredentialsSchema = Yup.object({
+  email: Yup.string().email().required(),
+  password: Yup.string().required(),
 });
 
-// https://medium.com/@pawanrijal/building-authentication-in-a-next-js-14-app-using-nextauth-and-prisma-59c9d67a0eca
+declare module 'next-auth' {
+  interface Session extends DefaultSession {
+    user: DefaultSession['user'] & {
+      id: string;
+    };
+  }
+}
+
+/// https://medium.com/@pawanrijal/building-authentication-in-a-next-js-14-app-using-nextauth-and-prisma-59c9d67a0eca
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
@@ -24,7 +33,6 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
     },
@@ -54,7 +62,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const { email, password } = await CredentialsSchema.parseAsync(credentials);
+          const { email, password } = CredentialsSchema.validateSync(credentials);
           const user = await prisma.user.findFirst({ where: { email } });
 
           if (user && bcrypt.compareSync(password, user.password)) {

@@ -25,10 +25,10 @@ const NewPatientDtoSchema = Yup.object({
 export type NewPatientDto = Yup.InferType<typeof NewPatientDtoSchema>;
 
 export type NewPatientDialogProps = {
-  action: (form: NewPatientDto) => Promise<string>;
+  createPatientAction: (form: NewPatientDto) => Promise<string>;
 };
 
-export default function NewPatientDialog({ action }: NewPatientDialogProps) {
+export default function NewPatientDialog({ createPatientAction }: NewPatientDialogProps) {
   const [isOpen, { open, close }] = useDisclosure(false);
   const [isPending, startTransition] = useTransition();
 
@@ -39,10 +39,10 @@ export default function NewPatientDialog({ action }: NewPatientDialogProps) {
   const handleSubmit = useCallback(
     (data: NewPatientDto) => {
       startTransition(async () => {
-        await action(data);
+        await createPatientAction(data);
       });
     },
-    [action],
+    [createPatientAction],
   );
 
   return (

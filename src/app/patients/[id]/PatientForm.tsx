@@ -23,10 +23,10 @@ export type UpdatePatientDto = Yup.InferType<typeof UpdatePatientDtoSchema>;
 export type PatientFormProps = {
   id: string;
   defaultValues: UpdatePatientDto;
-  action: (id: string, form: UpdatePatientDto) => Promise<string>;
+  updatePatientAction: (id: string, form: UpdatePatientDto) => Promise<string>;
 };
 
-export default function PatientForm({ id, defaultValues, action }: PatientFormProps) {
+export default function PatientForm({ id, defaultValues, updatePatientAction }: PatientFormProps) {
   const [isPending, startTransition] = useTransition();
 
   const methods = useForm<UpdatePatientDto>({
@@ -37,10 +37,10 @@ export default function PatientForm({ id, defaultValues, action }: PatientFormPr
   const handleSubmit = useCallback(
     (data: UpdatePatientDto) => {
       startTransition(async () => {
-        await action(id, data);
+        await updatePatientAction(id, data);
       });
     },
-    [id, action],
+    [id, updatePatientAction],
   );
 
   return (
