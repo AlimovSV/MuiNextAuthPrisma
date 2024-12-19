@@ -3,7 +3,7 @@ import path from 'path';
 
 import { createId } from '@paralleldrive/cuid2';
 import { extension } from 'mime-types';
-import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
 import { notFound, redirect } from 'next/navigation';
 
 import Box from '@mui/material/Box';

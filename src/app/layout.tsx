@@ -1,7 +1,6 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth/next';
 
 import Box from '@mui/material/Box';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
@@ -23,10 +22,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect('/api/auth/signin');
-  }
 
   return (
     <html lang="en" suppressHydrationWarning>
