@@ -1,6 +1,5 @@
 'use client';
 
-import dayjs from 'dayjs';
 import Image from 'next/image';
 
 import { styled } from '@mui/material';
@@ -13,6 +12,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Modal from '@mui/material/Modal';
+
+import dayjs from '@/theme/locales/dayjs';
 
 import { getPhotoUrl } from '@/lib/utils';
 

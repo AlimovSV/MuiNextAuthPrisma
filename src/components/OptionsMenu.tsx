@@ -34,6 +34,7 @@ export default function OptionsMenu() {
       setAnchorEl(null);
     }
   }, []);
+  const handleNotImplementedYet = React.useCallback(() => alert('Не реализовано'), []);
   return (
     <React.Fragment>
       <MenuButton aria-label="Open menu" onClick={handleClick} sx={{ borderColor: 'transparent' }}>
@@ -59,11 +60,11 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Профиль</MenuItem>
-        <MenuItem onClick={handleClose}>Учетная запись</MenuItem>
+        <MenuItem onClick={handleNotImplementedYet}>Профиль</MenuItem>
+        <MenuItem onClick={handleNotImplementedYet}>Учетная запись</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Добавить нового пользователя</MenuItem>
-        <MenuItem onClick={handleClose}>Настройки</MenuItem>
+        <MenuItem onClick={handleNotImplementedYet}>Добавить нового пользователя</MenuItem>
+        <MenuItem onClick={handleNotImplementedYet}>Настройки</MenuItem>
         <Divider />
         <MenuItem
           onClick={handleLogout}

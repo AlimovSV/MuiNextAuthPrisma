@@ -1,11 +1,12 @@
 'use client';
 
-import dayjs from 'dayjs';
 import React from 'react';
 
 import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { Patient } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+
+import dayjs from '@/theme/locales/dayjs';
 
 const columns: GridColDef<Patient>[] = [
   {
