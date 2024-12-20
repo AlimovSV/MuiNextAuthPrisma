@@ -25,7 +25,11 @@ export default function MenuContent() {
             <ListItemButton
               LinkComponent={Link}
               href={item.href}
-              selected={item.strict ? item.href === pathname : pathname.startsWith(item.href)}
+              selected={
+                item.strict
+                  ? item.href === pathname
+                  : pathname != null && pathname.startsWith(item.href)
+              }
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />

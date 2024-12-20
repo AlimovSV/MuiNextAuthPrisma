@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-import { DefaultSession, NextAuthOptions } from 'next-auth';
 
 import * as Yup from 'yup';
 
@@ -12,36 +11,29 @@ const CredentialsSchema = Yup.object({
   password: Yup.string().required(),
 });
 
-declare module 'next-auth' {
-  interface Session extends DefaultSession {
-    user: DefaultSession['user'] & {
-      id: string;
-    };
-  }
-}
-
 /// https://medium.com/@pawanrijal/building-authentication-in-a-next-js-14-app-using-nextauth-and-prisma-59c9d67a0eca
-export const authOptions: NextAuthOptions = {
+export const {
+  auth,
+  signIn,
+  signOut,
+  handlers: { GET, POST },
+} = NextAuth({
+  debug: true,
   session: {
     strategy: 'jwt',
   },
   callbacks: {
+    async authorized({ auth }) {
+      return auth?.user != null;
+    },
     async session({ session, token }) {
-      console.log('Session Callback', { session, token });
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
+          id: token.sub,
         },
       };
-    },
-    async jwt({ token, user }) {
-      console.log('JWT Callback', { token, user });
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
     },
   },
   providers: [
@@ -79,4 +71,4 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-};
+});

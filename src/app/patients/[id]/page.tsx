@@ -3,7 +3,6 @@ import path from 'path';
 
 import { createId } from '@paralleldrive/cuid2';
 import { extension } from 'mime-types';
-import { getServerSession } from 'next-auth/next';
 import { notFound, redirect } from 'next/navigation';
 
 import Box from '@mui/material/Box';
@@ -19,7 +18,7 @@ import ScanList from './ScanList';
 
 import prisma from '@/lib/prisma';
 
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/auth';
 import { formatPatientName } from '@/lib/utils';
 
 type PatientPageProps = {
@@ -53,9 +52,9 @@ export default async function PatientPage(props: PatientPageProps) {
   async function uploadPhoto(patientId: string, formData: FormData): Promise<string> {
     'use server';
 
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
-    if (!session) {
+    if (!session?.user?.id) {
       notFound();
     }
 
