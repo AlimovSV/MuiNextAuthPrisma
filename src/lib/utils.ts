@@ -2,7 +2,7 @@ import { type Patient, type Photo } from '@prisma/client';
 import { extension } from 'mime-types';
 
 export function getPhotoUrl(photo: Pick<Photo, 'id' | 'patientId' | 'contentType'>) {
-  return `/photos/${photo.patientId}/${photo.id}.${extension(photo.contentType)}`;
+  return `/files/${photo.patientId}/${photo.id}.${extension(photo.contentType)}`;
 }
 
 export function formatPatientName(patient: Pick<Patient, 'firstName' | 'lastName' | 'givenName'>) {
