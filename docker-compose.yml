@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - AUTH_SECRET=l8HwaScAF+JebgBbjJkV4GnssX7z+4A6wRs15QotRyI=
+      - DATABASE_URL=file:/app/.next/dev.db
+      - PAYLOAD_UPLOADS_DIR=/app/public/photos
+    volumes:
+      - ./src/prisma/dev.db:/app/.next/dev.db:rw
