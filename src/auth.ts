@@ -18,6 +18,7 @@ export const {
   signOut,
   handlers: { GET, POST },
 } = NextAuth({
+  trustHost: true,
   debug: true,
   session: {
     strategy: 'jwt',
@@ -64,8 +65,8 @@ export const {
               email: user.email,
             };
           }
-        } catch {
-          // Nothing to do
+        } catch (error) {
+          console.error('[authorize]: unexpected error', error);
         }
         return null;
       },
